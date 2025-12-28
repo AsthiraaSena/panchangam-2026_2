@@ -83,3 +83,27 @@ font-weight:600;
     width:35%;
   }
 }
+
+.controls{
+  display:flex;
+  gap:12px;              /* space between date & button */
+  max-width:420px;       /* keeps it neat on desktop */
+  margin:0 auto 12px;    /* center align */
+}
+
+.controls input{
+  flex:1;                /* date takes more space */
+}
+
+.controls button{
+  flex:0 0 120px;        /* fixed width button */
+}
+@media (max-width:480px){
+  .controls{
+    flex-direction:column;
+  }
+  .controls button{
+    width:100%;
+  }
+}
+
