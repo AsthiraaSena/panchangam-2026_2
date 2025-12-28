@@ -3,21 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panchangam CSV Test</title>
+<title>Panchangam (JSON)</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h2>🪐 Panchangam – CSV Test</h2>
+<h2>🪐 Panchangam – Transit</h2>
 
 <input type="date" id="dateInput">
 <button onclick="loadData()">Show</button>
+
+<div id="info"></div>
 
 <table>
 <thead>
 <tr>
 <th>Planet</th>
-<th>D.M.S</th>
+<th>DMS</th>
 <th>Sign</th>
 <th>Star</th>
 <th>Sub</th>
@@ -33,50 +35,42 @@
 async function loadData(){
 
   const input = document.getElementById("dateInput").value;
-  if(!input){
-    alert("Select date");
-    return;
-  }
+  if(!input){ alert("Select date"); return; }
 
   // YYYY-MM-DD → DD-MM-YYYY
   const [y,m,d] = input.split("-");
   const selectedDate = `${d}-${m}-${y}`;
 
-  const res = await fetch("panchangam_2026.csv");
-  const text = (await res.text())
-    .replace(/\uFEFF/g,"")
-    .replace(/\r/g,"");
+  const res = await fetch("panchangam_2026.json");
+  const data = await res.json();
 
-  const lines = text.split("\n");
   const tbody = document.getElementById("tbody");
+  const info = document.getElementById("info");
   tbody.innerHTML = "";
+  info.innerHTML = "";
 
-  let found = false;
+  const rows = data.filter(r => r.Date === selectedDate);
 
-  for(let i=1;i<lines.length;i++){
-    const line = lines[i].trim();
-    if(!line || line.replace(/,/g,"")==="") continue;
-
-    const c = line.split(",");
-
-    if(c[0] === selectedDate){
-      found = true;
-      tbody.innerHTML += `
-        <tr>
-          <td>${c[2]}</td>
-          <td>${c[3]}</td>
-          <td>${c[4]}</td>
-          <td>${c[5]}</td>
-          <td>${c[6]}</td>
-          <td>${c[7]}</td>
-        </tr>`;
-    }
-  }
-
-  if(!found){
+  if(rows.length === 0){
     tbody.innerHTML =
       `<tr><td colspan="6">No data for ${selectedDate}</td></tr>`;
+    return;
   }
+
+  // show Day + Ayanamsam once
+  info.innerText = `📅 ${rows[0].Day} | 🕉️ Ayanamsam: ${rows[0].Ayanamsam}`;
+
+  rows.forEach(r=>{
+    tbody.innerHTML += `
+      <tr>
+        <td>${r.Planett}</td>
+        <td>${r.DMS}</td>
+        <td>${r.Sign}</td>
+        <td>${r.Star}</td>
+        <td>${r.Sub}</td>
+        <td>${r.Time}</td>
+      </tr>`;
+  });
 }
 </script>
 
