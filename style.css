@@ -21,6 +21,12 @@ color:white;
 border:none;
 }
 
+#info{
+margin:10px 0;
+font-weight:600;
+text-align:center;
+}
+
 table{
 width:100%;
 border-collapse:collapse;
