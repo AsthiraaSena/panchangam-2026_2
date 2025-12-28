@@ -9,7 +9,7 @@ text-align:center;
 }
 
 input,button{
-width:100%;
+width:80%;
 padding:12px;
 margin:8px 0;
 font-size:16px;
@@ -31,7 +31,7 @@ table{
 width:100%;
 border-collapse:collapse;
 margin-top:8px;
-font-size:13px;           /* ↓ smaller font */
+font-size:12px;           /* ↓ smaller font */
 }
 
 th, td{
