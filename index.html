@@ -3,12 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panchangam (JSON)</title>
-<link rel="stylesheet" href="style.css">
+<title>Panchangam – JSON</title>
+
+<style>
+body{
+font-family:system-ui;
+padding:16px;
+background:#f4f6fb;
+}
+
+h2{text-align:center}
+
+input,button{
+width:100%;
+padding:12px;
+margin:8px 0;
+font-size:16px;
+}
+
+button{
+background:#243c8f;
+color:white;
+border:none;
+}
+
+#info{
+margin:10px 0;
+font-weight:600;
+text-align:center;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+font-size:14px;
+}
+
+th,td{
+border:1px solid #ccc;
+padding:8px;
+text-align:center;
+}
+
+th{
+background:#243c8f;
+color:white;
+}
+</style>
+
 </head>
 <body>
 
-<h2>🪐 PanchangamNew – Transit</h2>
+<h2>🪐 Panchangam – Transit</h2>
 
 <input type="date" id="dateInput">
 <button onclick="loadData()">Show</button>
@@ -19,11 +66,11 @@
 <thead>
 <tr>
 <th>Planet</th>
-<th>DMS</th>
+<th>D.M.S</th>
 <th>Sign</th>
 <th>Star</th>
 <th>Sub</th>
-<th>Time</th>
+<th>S.Time</th>
 </tr>
 </thead>
 <tbody id="tbody">
@@ -35,7 +82,10 @@
 async function loadData(){
 
   const input = document.getElementById("dateInput").value;
-  if(!input){ alert("Select date"); return; }
+  if(!input){
+    alert("Select date");
+    return;
+  }
 
   // YYYY-MM-DD → DD-MM-YYYY
   const [y,m,d] = input.split("-");
@@ -58,17 +108,18 @@ async function loadData(){
   }
 
   // show Day + Ayanamsam once
-  info.innerText = `📅 ${rows[0].Day} | 🕉️ Ayanamsam: ${rows[0].Ayanamsam}`;
+  info.innerText =
+    `📅 ${rows[0].Day} | 🕉️ Ayanamsam: ${rows[0].Ayanamsam}`;
 
   rows.forEach(r=>{
     tbody.innerHTML += `
       <tr>
         <td>${r.Planet}</td>
-        <td>${r.DMS}</td>
+        <td>${r["D.M.S"]}</td>
         <td>${r.Sign}</td>
         <td>${r.Star}</td>
         <td>${r.Sub}</td>
-        <td>${r.Time}</td>
+        <td>${r["S.Time"] || ""}</td>
       </tr>`;
   });
 }
